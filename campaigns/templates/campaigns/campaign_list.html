@@ -1,0 +1,33 @@
+{% extends "campaigns/base.html" %}
+
+{% block content %}
+  <h1>Рекламные кампании</h1>
+  <a href="{% url 'campaign_create' %}" class="btn">Создать кампанию</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Статус</th>
+        <th>Бюджет</th>
+        <th>Период</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in campaigns %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td><a href="{% url 'campaign_detail' c.pk %}">{{ c.name }}</a></td>
+        <td>{{ c.get_status_display }}</td>
+        <td>{{ c.budget }}</td>
+        <td>{{ c.start_date }} — {{ c.end_date }}</td>
+        <td>
+          <a href="{% url 'campaign_update' c.pk %}">Редактировать</a> |
+          <a href="{% url 'campaign_delete' c.pk %}">Удалить</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

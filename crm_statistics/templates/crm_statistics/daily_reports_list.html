@@ -1,0 +1,75 @@
+{% extends "crm_statistics/base.html" %}
+
+{% block content %}
+  <h1>Ежедневные отчёты</h1>
+
+  <div style="display: flex; gap: 12px; margin-bottom: 24px; align-items: center;">
+    <a href="{% url 'statistic:statistics_dashboard' %}" class="btn" style="padding: 8px 16px; text-decoration: none; background: #007bff; color: white; border-radius: 4px;">
+      ← На дашборд
+    </a>
+    <span>
+      Всего отчётов: {{ paginator.count }}
+    </span>
+  </div>
+
+  <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+    <thead>
+      <tr style="background: #f8f9fa;">
+        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Дата</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Лиды</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Клиенты</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Контракты</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Кампании</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Выручка</th>
+        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Ср. чек</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reports %}
+        <tr style="border-bottom: 1px solid #eee;">
+          <td style="padding: 12px; border: 1px solid #ddd;">{{ r.date }}</td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">{{ r.leads_count }}</td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">{{ r.clients_count }}</td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">{{ r.contracts_count }}</td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">{{ r.campaigns_count }}</td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">
+            {{ r.revenue|floatformat:2 }} ₽
+          </td>
+          <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">
+            {{ r.avg_contract_value|floatformat:2 }} ₽
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7" style="padding: 24px; text-align: center; color: #666;">
+            Отчётов нет
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <nav style="margin-top: 24px;">
+      <ul style="list-style: none; display: flex; gap: 8px; flex-wrap: wrap;">
+        {% if page_obj.has_previous %}
+          <li>
+            <a href="?page={{ page_obj.previous_page_number }}" style="padding: 6px 12px; background: #fff; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; color: #333;">
+              ← Предыдущая
+            </a>
+          </li>
+        {% endif %}
+
+        <span style="margin: 0 8px;">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <li>
+            <a href="?page={{ page_obj.next_page_number }}" style="padding: 6px 12px; background: #fff; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; color: #333;">
+              Следующая →
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+{% endblock %}

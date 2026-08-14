@@ -1,0 +1,31 @@
+{% extends "services/base.html" %}
+
+{% block content %}
+  <h1>Услуги</h1>
+  <a href="{% url 'service_create' %}" class="btn">Создать услугу</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Стоимость</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in services %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td><a href="{% url 'service_detail' s.pk %}">{{ s.name }}</a></td>
+        <td>{{ s.description|truncatechars:50 }}</td>
+        <td>{{ s.price }}</td>
+        <td>
+          <a href="{% url 'service_update' s.pk %}">Редактировать</a> |
+          <a href="{% url 'service_delete' s.pk %}">Удалить</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

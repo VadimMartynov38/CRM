@@ -1,0 +1,11 @@
+{% extends "campaigns/base.html" %}
+
+{% block content %}
+  <h1>{% if object %}Редактировать кампанию{% else %}Создать кампанию{% endif %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Сохранить</button>
+  </form>
+  <a href="{% url 'campaign_list' %}">Отмена</a>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "contracts/base.html" %}
+
+{% block content %}
+  <h1>{{ contract.number }} — {{ contract.title }}</h1>
+  <p><strong>Тип:</strong> {{ contract.get_type_display }}</p>
+  <p><strong>Статус:</strong> {{ contract.get_status_display }}</p>
+  <p><strong>Сумма:</strong> {{ contract.amount }} {{ contract.currency }}</p>
+
+  {% if contract.start_date or contract.end_date %}
+    <p>
+      <strong>Период:</strong>
+      {% if contract.start_date and contract.end_date %}
+        {{ contract.start_date }} — {{ contract.end_date }}
+      {% elif contract.start_date %}
+        с {{ contract.start_date }}
+      {% elif contract.end_date %}
+        до {{ contract.end_date }}
+      {% endif %}
+    </p>
+  {% endif %}
+
+  {% if contract.file %}
+    <p><strong>Файл договора:</strong> <a href="{{ contract.file.url }}" target="_blank">Скачать/открыть</a></p>
+  {% else %}
+    <p><em>Файл не загружен.</em></p>
+  {% endif %}
+
+  <p><strong>Примечания:</strong><br>{{ contract.notes|linebreaks }}</p>
+
+  <a href="{% url 'contract_update' contract.pk %}">Редактировать</a> |
+  <a href="{% url 'contract_delete' contract.pk %}">Удалить</a> |
+  <a href="{% url 'contract_list' %}">Назад к списку</a>
+{% endblock %}

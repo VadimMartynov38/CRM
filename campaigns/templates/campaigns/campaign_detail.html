@@ -1,0 +1,13 @@
+{% extends "campaigns/base.html" %}
+
+{% block content %}
+  <h1>{{ campaign.name }}</h1>
+  <p><strong>Статус:</strong> {{ campaign.get_status_display }}</p>
+  <p><strong>Описание:</strong> {{ campaign.description }}</p>
+  <p><strong>Бюджет:</strong> {{ campaign.budget }}</p>
+  <p><strong>Период:</strong> {{ campaign.start_date }} — {{ campaign.end_date }}</p>
+
+  <a href="{% url 'campaign_update' campaign.pk %}">Редактировать</a> |
+  <a href="{% url 'campaign_delete' campaign.pk %}">Удалить</a> |
+  <a href="{% url 'campaign_list' %}">Назад к списку</a>
+{% endblock %}

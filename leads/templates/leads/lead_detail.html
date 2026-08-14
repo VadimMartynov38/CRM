@@ -1,0 +1,14 @@
+{% extends "leads/base.html" %}
+
+{% block content %}
+  <h1>{{ lead.first_name }} {{ lead.last_name|default:'' }}</h1>
+  <p><strong>Email:</strong> {{ lead.email|default:"Не указан" }}</p>
+  <p><strong>Телефон:</strong> {{ lead.phone|default:"Не указан" }}</p>
+  <p><strong>Источник:</strong> {{ lead.get_source_display }}</p>
+  <p><strong>Статус:</strong> {{ lead.get_status_display }}</p>
+  <p><strong>Заметки:</strong><br>{{ lead.notes|linebreaks }}</p>
+
+  <a href="{% url 'lead_update' lead.pk %}">Редактировать</a> |
+  <a href="{% url 'lead_delete' lead.pk %}">Удалить</a> |
+  <a href="{% url 'lead_list' %}">Назад к списку</a>
+{% endblock %}

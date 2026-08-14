@@ -1,0 +1,73 @@
+{% extends "crm_statistics/base.html" %}
+
+{% block content %}
+  <h1>Статистика CRM</h1>
+
+  <div style="margin-bottom: 24px;">
+    <a href="{% url 'statistic:statistics_dashboard' %}" class="btn" style="padding: 8px 16px; text-decoration: none; background: #6c757d; color: white; border-radius: 4px;">← Обновить страницу</a>
+
+    <a href="{% url 'statistic:statistics_refresh' %}?days=60"
+       class="btn"
+       style="padding: 8px 16px; text-decoration: none; background: #007bff; color: white; border-radius: 4px;"
+       onclick="const btn = this; const originalText = btn.innerText; btn.innerText='Пересчёт...'; btn.style.opacity='0.7';">
+      🔄 Пересчитать отчёты (60 дней)
+    </a>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+    <div>
+      <h3>Лиды (30 дн)</h3>
+      <p>{{ stats_30d.leads }}</p>
+    </div>
+    <div>
+      <h3>Клиенты (30 дн)</h3>
+      <p>{{ stats_30d.clients }}</p>
+    </div>
+    <div>
+      <h3>Контракты (30 дн)</h3>
+      <p>{{ stats_30d.contracts }}</p>
+    </div>
+    <div>
+      <h3>Кампании (30 дн)</h3>
+      <p>{{ stats_30d.campaigns }}</p>
+    </div>
+    <div>
+      <h3>Выручка (30 дн)</h3>
+      <p>{{ stats_30d.revenue|floatformat:2 }} ₽</p>
+    </div>
+    <div>
+      <h3>Средний чек контракта (30 дн)</h3>
+      <p>{{ stats_30d.avg_contract_value|floatformat:2 }} ₽</p>
+    </div>
+  </div>
+
+  <h2>Динамика по дням (последние 7)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Лиды</th>
+        <th>Клиенты</th>
+        <th>Контракты</th>
+        <th>Кампании</th>
+        <th>Выручка</th>
+        <th>Ср. чек</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in recent_reports %}
+      <tr>
+        <td>{{ r.date }}</td>
+        <td>{{ r.leads_count }}</td>
+        <td>{{ r.clients_count }}</td>
+        <td>{{ r.contracts_count }}</td>
+        <td>{{ r.campaigns_count }}</td>
+        <td>{{ r.revenue|floatformat:2 }} ₽</td>
+        <td>{{ r.avg_contract_value|floatformat:2 }} ₽</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p><a href="{% url 'statistic:daily_reports_list' %}">Все отчёты</a></p>
+{% endblock %}

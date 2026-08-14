@@ -1,0 +1,44 @@
+{% extends "clients/base.html" %}
+
+{% block content %}
+  <h1>Клиенты</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Тип / Имя / Компания</th>
+        <th>Статус</th>
+        <th>Контакты</th>
+        <th>ИНН</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>
+          <strong>{{ c.get_type_display }}</strong><br>
+          {% if c.type == 'company' %}
+            {{ c.company_name }}
+          {% else %}
+            {{ c.first_name }} {{ c.last_name|default:'' }}
+          {% endif %}
+        </td>
+        <td>{{ c.get_status_display }}</td>
+        <td>
+          {% if c.email %}{{ c.email }}<br>{% endif %}
+          {% if c.phone %}{{ c.phone }}{% endif %}
+        </td>
+        <td>{{ c.inn|default:"—" }}</td>
+        <td>
+          <a href="{% url 'client_detail' c.pk %}">Подробнее</a> |
+          <a href="{% url 'client_update' c.pk %}">Редактировать</a> |
+          <a href="{% url 'client_delete' c.pk %}">Удалить</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
